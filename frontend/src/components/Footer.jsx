@@ -13,19 +13,15 @@ const Footer = () => {
         </div>
 
         <p className="footer-copy">
-          Built with <FiHeart className="heart-icon" /> by{' '}
           <span>Paritala Pavan Kumar</span> &nbsp;·&nbsp; {new Date().getFullYear()}
         </p>
 
         <div className="footer-socials">
-          <a href="https://github.com/pavankumarparitala2580" target="_blank" rel="noreferrer" aria-label="GitHub">
+          <a href="https://github.com/pavanparitala09" target="_blank" rel="noreferrer" aria-label="GitHub">
             <FiGithub />
           </a>
-          <a href="https://linkedin.com/in/pavankumarparitala" target="_blank" rel="noreferrer" aria-label="LinkedIn">
+          <a href="https://www.linkedin.com/in/pavankumar-paritala-aa733a29a" target="_blank" rel="noreferrer" aria-label="LinkedIn">
             <FiLinkedin />
-          </a>
-          <a href="https://twitter.com" target="_blank" rel="noreferrer" aria-label="Twitter">
-            <FiTwitter />
           </a>
         </div>
       </div>

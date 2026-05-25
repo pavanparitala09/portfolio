@@ -1,52 +1,20 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   FiCode, FiDatabase, FiServer, FiGlobe,
   FiGitBranch, FiSmartphone, FiLayout, FiTerminal
 } from 'react-icons/fi';
 import './Skills.css';
 
-const skills = [
-  {
-    category: 'Frontend',
-    icon: <FiLayout />,
-    items: [
-      { name: 'React.js', level: 85 },
-      { name: 'JavaScript (ES6+)', level: 88 },
-      { name: 'HTML5 & CSS3', level: 90 },
-      { name: 'React Native', level: 70 },
-    ],
-  },
-  {
-    category: 'Backend',
-    icon: <FiServer />,
-    items: [
-      { name: 'Node.js', level: 82 },
-      { name: 'Express.js', level: 80 },
-      { name: 'REST APIs', level: 85 },
-      { name: 'Python', level: 65 },
-    ],
-  },
-  {
-    category: 'Database',
-    icon: <FiDatabase />,
-    items: [
-      { name: 'MongoDB', level: 80 },
-      { name: 'MySQL', level: 70 },
-      { name: 'Mongoose ODM', level: 78 },
-      { name: 'Redis', level: 50 },
-    ],
-  },
-  {
-    category: 'Tools & Others',
-    icon: <FiTerminal />,
-    items: [
-      { name: 'Git & GitHub', level: 85 },
-      { name: 'VS Code', level: 95 },
-      { name: 'Postman', level: 80 },
-      { name: 'Linux / CLI', level: 72 },
-    ],
-  },
-];
+const iconMap = {
+  FiLayout: <FiLayout />,
+  FiServer: <FiServer />,
+  FiDatabase: <FiDatabase />,
+  FiTerminal: <FiTerminal />,
+  FiCode: <FiCode />,
+  FiGlobe: <FiGlobe />,
+  FiGitBranch: <FiGitBranch />,
+  FiSmartphone: <FiSmartphone />
+};
 
 const techTags = [
   'React', 'Node.js', 'MongoDB', 'Express', 'JavaScript',
@@ -54,6 +22,21 @@ const techTags = [
 ];
 
 const Skills = () => {
+  const [skills, setSkills] = useState([]);
+
+  useEffect(() => {
+    const fetchSkills = async () => {
+      try {
+        const res = await fetch('http://localhost:5000/api/public/skills');
+        const data = await res.json();
+        setSkills(data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchSkills();
+  }, []);
+
   return (
     <section id="skills" className="section skills">
       <div className="container">
@@ -70,7 +53,9 @@ const Skills = () => {
           {skills.map((group, i) => (
             <div key={i} className="skill-group">
               <div className="skill-group-header">
-                <span className="skill-group-icon">{group.icon}</span>
+                <span className="skill-group-icon">
+                  {iconMap[group.iconName] || <FiCode />}
+                </span>
                 <h3 className="skill-group-title">{group.category}</h3>
               </div>
               <div className="skill-bars">

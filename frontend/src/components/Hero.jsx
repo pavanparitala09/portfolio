@@ -3,16 +3,33 @@ import { FiGithub, FiLinkedin, FiTwitter, FiArrowRight, FiMail } from 'react-ico
 import profileImg from '../assets/profile.jpg';
 import './Hero.css';
 
-const TYPING_TEXTS = ['Full Stack Developer', 'React Developer', 'Node.js Developer', 'Problem Solver'];
-
 const Hero = () => {
+  const [bio, setBio] = useState(null);
   const [displayed, setDisplayed] = useState('');
   const [textIndex, setTextIndex] = useState(0);
   const [charIndex, setCharIndex] = useState(0);
   const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
+    const fetchBio = async () => {
+      try {
+        const res = await fetch('http://localhost:5000/api/public/bio');
+        const data = await res.json();
+        setBio(data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchBio();
+  }, []);
+
+  useEffect(() => {
+    if (!bio || !bio.roles || bio.roles.length === 0) return;
+    
+    const TYPING_TEXTS = bio.roles;
     const current = TYPING_TEXTS[textIndex];
+    if (!current) return;
+
     const speed = deleting ? 50 : 100;
 
     const timer = setTimeout(() => {
@@ -36,9 +53,11 @@ const Hero = () => {
     }, speed);
 
     return () => clearTimeout(timer);
-  }, [charIndex, deleting, textIndex]);
+  }, [charIndex, deleting, textIndex, bio]);
 
   const scrollTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+
+  if (!bio) return <section id="hero" className="hero"><div className="container hero-content">Loading...</div></section>;
 
   return (
     <section id="hero" className="hero">
@@ -57,7 +76,7 @@ const Hero = () => {
 
           {/* Name */}
           <p className="hero-greeting">HELLO, I'M</p>
-          <h1 className="hero-name">Paritala Pavan Kumar</h1>
+          <h1 className="hero-name">{bio.name || 'Paritala Pavan Kumar'}</h1>
 
           {/* Typing role */}
           <div className="hero-role">
@@ -68,9 +87,7 @@ const Hero = () => {
 
           {/* Description */}
           <p className="hero-desc">
-            I build high-performance web applications with clean code and scalable
-            architecture. Passionate about delivering exceptional user experiences
-            from backend to frontend.
+            {bio.description || 'I build high-performance web applications...'}
           </p>
 
           {/* CTA */}
@@ -86,20 +103,23 @@ const Hero = () => {
           {/* Social */}
           <div className="hero-socials">
             <div className="social-icons">
-              <a href="https://github.com/pavankumarparitala2580" target="_blank" rel="noreferrer" className="social-icon" aria-label="GitHub">
-                <FiGithub />
-              </a>
-              <a href="https://linkedin.com/in/pavankumarparitala" target="_blank" rel="noreferrer" className="social-icon" aria-label="LinkedIn">
-                <FiLinkedin />
-              </a>
-              <a href="https://twitter.com" target="_blank" rel="noreferrer" className="social-icon" aria-label="Twitter">
-                <FiTwitter />
-              </a>
+              {bio.github && (
+                <a href={bio.github} target="_blank" rel="noreferrer" className="social-icon" aria-label="GitHub">
+                  <FiGithub />
+                </a>
+              )}
+              {bio.linkedin && (
+                <a href={bio.linkedin.startsWith('http') ? bio.linkedin : `https://${bio.linkedin}`} target="_blank" rel="noreferrer" className="social-icon" aria-label="LinkedIn">
+                  <FiLinkedin />
+                </a>
+              )}
             </div>
-            <a href="mailto:pavankumarparitala2580@gmail.com" className="hero-email">
-              <FiMail size={14} />
-              pavankumarparitala2580@gmail.com
-            </a>
+            {bio.email && (
+              <a href={`mailto:${bio.email}`} className="hero-email">
+                <FiMail size={14} />
+                {bio.email}
+              </a>
+            )}
           </div>
         </div>
 
@@ -110,7 +130,7 @@ const Hero = () => {
             <div className="hero-photo-ring hero-photo-ring--2" />
             <img
               src={profileImg}
-              alt="Paritala Pavan Kumar"
+              alt={bio.name}
               className="hero-photo"
             />
             {/* Floating badges */}

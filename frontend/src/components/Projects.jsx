@@ -1,74 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FiGithub, FiExternalLink, FiCode } from 'react-icons/fi';
 import './Projects.css';
 
 const FILTERS = ['all', 'web', 'mobile'];
 
-const ALL_PROJECTS = [
-  {
-    id: 1,
-    title: 'E-Commerce Platform',
-    description:
-      'A full-stack e-commerce platform with user authentication, product management, shopping cart, and payment integration using Stripe.',
-    tags: ['React', 'Node.js', 'MongoDB', 'Express', 'Stripe'],
-    category: 'web',
-    github: 'https://github.com/pavankumarparitala2580',
-    live: '',
-    featured: true,
-  },
-  {
-    id: 2,
-    title: 'Task Management App',
-    description:
-      'A collaborative task management application with real-time updates, drag-and-drop functionality, and team workspaces.',
-    tags: ['React', 'Socket.io', 'Node.js', 'MongoDB'],
-    category: 'web',
-    github: 'https://github.com/pavankumarparitala2580',
-    live: '',
-    featured: true,
-  },
-  {
-    id: 3,
-    title: 'Food Delivery App',
-    description:
-      'A React Native mobile app for food ordering with real-time order tracking, restaurant listings, and integrated payment gateway.',
-    tags: ['React Native', 'Node.js', 'MongoDB', 'Google Maps API'],
-    category: 'mobile',
-    github: 'https://github.com/pavankumarparitala2580',
-    live: '',
-    featured: false,
-  },
-  {
-    id: 4,
-    title: 'Student Result Portal',
-    description:
-      'A web portal for students to view exam results, track academic performance, and download grade cards with admin management.',
-    tags: ['React', 'Express', 'MongoDB', 'JWT', 'PDF'],
-    category: 'web',
-    github: 'https://github.com/pavankumarparitala2580',
-    live: '',
-    featured: false,
-  },
-  {
-    id: 5,
-    title: 'Fitness Tracker Mobile App',
-    description:
-      'A cross-platform mobile application to track workouts, log daily nutrition, view progress charts, and set fitness goals.',
-    tags: ['React Native', 'Node.js', 'MongoDB', 'Charts'],
-    category: 'mobile',
-    github: 'https://github.com/pavankumarparitala2580',
-    live: '',
-    featured: false,
-  },
-];
-
 const Projects = () => {
   const [active, setActive] = useState('all');
+  const [allProjects, setAllProjects] = useState([]);
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const res = await fetch('http://localhost:5000/api/public/projects');
+        const data = await res.json();
+        setAllProjects(data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchProjects();
+  }, []);
 
   const filtered =
     active === 'all'
-      ? ALL_PROJECTS
-      : ALL_PROJECTS.filter((p) => p.category === active);
+      ? allProjects
+      : allProjects.filter((p) => p.category === active);
 
   return (
     <section id="projects" className="section projects">
@@ -97,8 +53,13 @@ const Projects = () => {
         {/* Grid */}
         <div className="projects-grid">
           {filtered.map((p) => (
-            <div key={p.id} className={`project-card ${p.featured ? 'featured' : ''}`}>
+            <div key={p._id || p.id} className={`project-card ${p.featured ? 'featured' : ''}`}>
               {p.featured && <span className="featured-badge">Featured</span>}
+              {p.image && (
+                <div className="project-image-wrap">
+                  <img src={p.image} alt={p.title} className="project-image" />
+                </div>
+              )}
               <div className="project-header">
                 <div className="project-icon">
                   <FiCode />
@@ -131,7 +92,7 @@ const Projects = () => {
               <h3 className="project-title">{p.title}</h3>
               <p className="project-desc">{p.description}</p>
               <div className="project-tags">
-                {p.tags.map((t) => (
+                {p.tags && p.tags.map((t) => (
                   <span key={t} className="project-tag">
                     {t}
                   </span>

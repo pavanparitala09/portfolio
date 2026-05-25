@@ -55,16 +55,16 @@ const Contact = () => {
                 <span className="detail-icon"><FiMapPin /></span>
                 <div>
                   <span className="detail-label">Location</span>
-                  <span className="detail-value">India</span>
+                  <span className="detail-value">Hyderabad</span>
                 </div>
               </div>
             </div>
 
             <div className="contact-socials">
-              <a href="https://github.com/pavankumarparitala2580" target="_blank" rel="noreferrer" className="contact-social">
+              <a href="https://github.com/pavanparitala09" target="_blank" rel="noreferrer" className="contact-social">
                 <FiGithub /> GitHub
               </a>
-              <a href="https://linkedin.com/in/pavankumarparitala" target="_blank" rel="noreferrer" className="contact-social">
+              <a href="https://www.linkedin.com/in/pavankumar-paritala-aa733a29a" target="_blank" rel="noreferrer" className="contact-social">
                 <FiLinkedin /> LinkedIn
               </a>
             </div>

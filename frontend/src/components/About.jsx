@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { FiCode, FiLayers, FiZap, FiAward } from 'react-icons/fi';
 import profileImg from '../assets/profile.jpg';
 import './About.css';
@@ -7,11 +7,28 @@ const stats = [
   { icon: <FiCode />, value: '5+', label: 'Projects Built' },
   { icon: <FiLayers />, value: 'Full', label: 'Stack Developer' },
   { icon: <FiZap />, value: '100%', label: 'Passion' },
-  { icon: <FiAward />, value: 'CS', label: 'Student' },
+  { icon: <FiAward />, value: 'IT', label: 'Student' },
 ];
 
 const About = () => {
+  const [bio, setBio] = useState(null);
+
+  useEffect(() => {
+    const fetchBio = async () => {
+      try {
+        const res = await fetch('http://localhost:5000/api/public/bio');
+        const data = await res.json();
+        setBio(data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchBio();
+  }, []);
+
   const scrollTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+
+  if (!bio) return null;
 
   return (
     <section id="about" className="section about">
@@ -30,7 +47,7 @@ const About = () => {
             <div className="about-photo-wrapper">
               <img
                 src={profileImg}
-                alt="Paritala Pavan Kumar"
+                alt={bio.name}
                 className="about-photo"
               />
               <div className="about-photo-accent" />
@@ -53,22 +70,20 @@ const About = () => {
               <span className="tag-bracket">&lt;</span> Developer <span className="tag-bracket">/&gt;</span>
             </div>
             <h3 className="about-headline">
-              Passionate about building <span>impactful</span> digital experiences
+              {bio.aboutHeadline ? (
+                <>
+                  {bio.aboutHeadline.split(' ').map((word, i, arr) => 
+                    i === Math.floor(arr.length / 2) ? <span key={i}>{word} </span> : word + ' '
+                  )}
+                </>
+              ) : (
+                <>Passionate about building <span>impactful</span> digital experiences</>
+              )}
             </h3>
-            <p className="about-para">
-              I'm <strong>Paritala Pavan Kumar</strong>, a Computer Science student and
-              passionate Full Stack Developer. I love turning complex problems into
-              elegant, user-friendly solutions using modern web technologies.
-            </p>
-            <p className="about-para">
-              From crafting responsive frontends with React to architecting robust
-              backend systems with Node.js and MongoDB, I thrive across the entire
-              web stack. I'm always eager to learn new technologies and best practices.
-            </p>
-            <p className="about-para">
-              When I'm not coding, I enjoy exploring open-source projects, contributing
-              to developer communities, and continuously sharpening my problem-solving skills.
-            </p>
+            
+            {bio.aboutPara1 && <p className="about-para" dangerouslySetInnerHTML={{__html: bio.aboutPara1.replace(bio.name, `<strong>${bio.name}</strong>`)}}></p>}
+            {bio.aboutPara2 && <p className="about-para">{bio.aboutPara2}</p>}
+            {bio.aboutPara3 && <p className="about-para">{bio.aboutPara3}</p>}
 
             <div className="about-code-block">
               <div className="code-header">
@@ -79,11 +94,10 @@ const About = () => {
               </div>
               <pre className="code-content">
 {`{
-  "name": "Paritala Pavan Kumar",
-  "role": "Full Stack Developer",
-  "status": "Student",
-  "location": "India",
-  "projects": 5,
+  "name": "${bio.name}",
+  "role": "${bio.roles && bio.roles[0] ? bio.roles[0] : 'Developer'}",
+  "location": "Hyderabad",
+  "projects": "5+",
   "available": true
 }`}
               </pre>
