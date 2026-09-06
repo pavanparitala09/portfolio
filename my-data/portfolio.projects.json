@@ -1,0 +1,83 @@
+[{
+  "_id": {
+    "$oid": "6a0a9bb7ae48df535b164df4"
+  },
+  "title": "Agro-Wallet",
+  "description": "Built a full-stack web application for managing financial transactions and digital records using React, Node.js, and MongoDB. Implemented MVC architecture, secure authentication with HTTP-only cookies, and a responsive UI using Tailwind CSS.",
+  "tags": [
+    "React",
+    "Node.js",
+    "MongoDB",
+    "Express"
+  ],
+  "category": "web",
+  "image": "./image.png",
+  "github": "https://github.com/pavanparitala09/Agro_Wallet",
+  "live": "https://agro-wallet-rbowlucqr-paritala-pavan-kumars-projects.vercel.app",
+  "featured": true,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a0a9bb7ae48df535b164df6"
+  },
+  "title": "TalentSync AI",
+  "description": "TalentSync AI is a modern, full-stack job board and automated resume matcher. It scrapes real-time tech listings and utilizes Google Gemini AI to analyze candidate resumes, calculate compatibility scores, and suggest instant ATS optimizations.\n\nTech Stack: React, FastAPI, SQLite, Gemini AI, Scikit-learn, Web Scraping",
+  "tags": [
+    "FastAPI",
+    "BeautifulSoup4",
+    "Feedparser",
+    "HTTPX",
+    "Aiohttp",
+    "Scikit-learn",
+    "HTML5",
+    "Vanilla CSS"
+  ],
+  "category": "web",
+  "image": "http://localhost:5000/uploads/1779711145797-980720303.png",
+  "github": "https://github.com/pavanparitala09/ai-job-search-portal",
+  "live": "",
+  "featured": true,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a0a9bb7ae48df535b164df7"
+  },
+  "title": "AI Chat Bot",
+  "description": "AI Chatbot is a ChatGPT-like web application designed for real-time, token-by-token streaming conversations. Built with a modern React frontend and a high-performance FastAPI backend, the application connects to the Groq API (utilizing LLaMA 3.1 8B Instant) to deliver ultra-low latency AI responses. It includes a custom-designed glassmorphism UI, secure JWT-based user authentication, searchable persistent chat history stored in MongoDB, and a daily rate-limiting mechanism to manage API quotas dynamically.",
+  "tags": [
+    "FastAPI",
+    "Uvicorn",
+    "MongoDB",
+    "Groq Cloud SDK (LLaMA 3.1 8B Instant Model)",
+    "React"
+  ],
+  "category": "web",
+  "image": "http://localhost:5000/uploads/1779712132765-910941932.png",
+  "github": "https://github.com/pavanparitala09/ai-chatbot",
+  "live": "ai-chatbot-gray-three-81.vercel.app",
+  "featured": false,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a0a9bb7ae48df535b164df8"
+  },
+  "title": "DriveX",
+  "description": "DriveX is a secure, cloud-based document workspace and Google Drive clone built with React, Node.js, and MongoDB, featuring a custom-built in-browser Markdown editor, advanced storage optimization analytics, and Google Gemini AI integrations that enable users to automatically rename files and converse directly with document contents in real time.",
+  "tags": [
+    "Node.js",
+    "Express.js",
+    "MongoDB",
+    "React",
+    "Redux Toolkit",
+    "Tailwind CSS"
+  ],
+  "category": "web",
+  "image": "http://localhost:5000/uploads/1779712788403-862897254.png",
+  "github": "htttps://github.com/drivex",
+  "live": "https://drivex-tawny.vercel.app",
+  "featured": false,
+  "__v": 0
+}]

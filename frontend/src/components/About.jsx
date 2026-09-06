@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FiCode, FiLayers, FiZap, FiAward } from 'react-icons/fi';
 import profileImg from '../assets/profile.jpg';
-import { API_BASE_URL } from '../config/api';
+import { API_BASE_URL, getImageUrl } from '../config/api';
 import './About.css';
 
 const stats = [
@@ -47,7 +47,7 @@ const About = () => {
           <div className="about-photo-col">
             <div className="about-photo-wrapper">
               <img
-                src={profileImg}
+                src={bio.avatar ? getImageUrl(bio.avatar) : profileImg}
                 alt={bio.name}
                 className="about-photo"
               />

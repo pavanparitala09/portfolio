@@ -10,7 +10,8 @@ const BioSchema = new mongoose.Schema({
   aboutPara3: { type: String },
   email: { type: String },
   github: { type: String },
-  linkedin: { type: String }
+  linkedin: { type: String },
+  avatar: { type: String }
 });
 
 module.exports = mongoose.model('Bio', BioSchema);

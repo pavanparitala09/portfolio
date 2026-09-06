@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { API_BASE_URL } from '../../config/api';
+import { API_BASE_URL, getImageUrl } from '../../config/api';
 
 const ManageBio = () => {
   const [bio, setBio] = useState({
@@ -12,9 +12,12 @@ const ManageBio = () => {
     aboutPara3: '',
     email: '',
     github: '',
-    linkedin: ''
+    linkedin: '',
+    avatar: ''
   });
   const [message, setMessage] = useState('');
+  const [uploading, setUploading] = useState(false);
+  const [uploadStatus, setUploadStatus] = useState(''); // 'loading' | 'success' | 'error'
 
   useEffect(() => {
     const fetchBio = async () => {
@@ -24,7 +27,8 @@ const ManageBio = () => {
         if (data && data.name) {
           setBio({
             ...data,
-            roles: data.roles ? data.roles.join(', ') : ''
+            roles: data.roles ? data.roles.join(', ') : '',
+            avatar: data.avatar || ''
           });
         }
       } catch (err) {
@@ -38,12 +42,48 @@ const ManageBio = () => {
     setBio({ ...bio, [e.target.name]: e.target.value });
   };
 
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const token = localStorage.getItem('adminToken');
+    const uploadData = new FormData();
+    uploadData.append('image', file);
+
+    setUploading(true);
+    setUploadStatus('loading');
+
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/admin/upload`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
+        body: uploadData
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        setBio((prev) => ({ ...prev, avatar: data.imageUrl }));
+        setUploadStatus('success');
+      } else {
+        setUploadStatus('error');
+        alert(data.msg || 'Upload failed');
+      }
+    } catch (err) {
+      console.error(err);
+      setUploadStatus('error');
+    } finally {
+      setUploading(false);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage('');
     try {
       const token = localStorage.getItem('adminToken');
-      const payload = { ...bio, roles: bio.roles.split(',').map(r => r.trim()) };
+      const payload = { ...bio, roles: bio.roles.split(',').map((r) => r.trim()) };
       const res = await fetch(`${API_BASE_URL}/api/admin/bio`, {
         method: 'PUT',
         headers: {
@@ -67,8 +107,46 @@ const ManageBio = () => {
     <div>
       <h2>Manage Bio & Hero</h2>
       <div className="admin-card">
-        {message && <p style={{color: 'green', marginBottom: '10px'}}>{message}</p>}
+        {message && <p style={{ color: 'green', marginBottom: '10px' }}>{message}</p>}
         <form onSubmit={handleSubmit}>
+          <div className="admin-form-group">
+            <label>Profile Picture (Cloudinary)</label>
+            <div className="file-upload-wrapper">
+              <div className="image-preview-box">
+                {bio.avatar ? (
+                  <img src={getImageUrl(bio.avatar)} alt="Profile Preview" />
+                ) : (
+                  <div className="image-preview-placeholder">No photo uploaded</div>
+                )}
+              </div>
+              <div style={{ flexGrow: 1 }}>
+                <input
+                  type="text"
+                  name="avatar"
+                  value={bio.avatar || ''}
+                  onChange={handleChange}
+                  className="admin-form-input"
+                  placeholder="Image URL or upload file below..."
+                />
+                <div className="file-upload-btn-container" style={{ marginTop: '8px' }}>
+                  <div className="file-upload-btn" style={{ padding: '10px 14px', cursor: 'pointer' }}>
+                    {uploading ? 'Uploading to Cloudinary...' : 'Choose Profile Picture'}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageUpload}
+                      disabled={uploading}
+                      style={{ opacity: 0, position: 'absolute', left: 0, top: 0, width: '100%', height: '100%', cursor: 'pointer' }}
+                    />
+                  </div>
+                </div>
+                {uploadStatus === 'loading' && <p className="upload-status loading">Uploading to Cloudinary...</p>}
+                {uploadStatus === 'success' && <p className="upload-status success">Uploaded to Cloudinary successfully!</p>}
+                {uploadStatus === 'error' && <p className="upload-status error">Upload failed. Please try again.</p>}
+              </div>
+            </div>
+          </div>
+
           <div className="admin-form-group">
             <label>Name</label>
             <input type="text" name="name" value={bio.name} onChange={handleChange} className="admin-form-input" required />

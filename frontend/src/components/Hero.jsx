@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FiGithub, FiLinkedin, FiTwitter, FiArrowRight, FiMail } from 'react-icons/fi';
 import profileImg from '../assets/profile.jpg';
-import { API_BASE_URL } from '../config/api';
+import { API_BASE_URL, getImageUrl } from '../config/api';
 import './Hero.css';
 
 const Hero = () => {
@@ -130,7 +130,7 @@ const Hero = () => {
             <div className="hero-photo-ring" />
             <div className="hero-photo-ring hero-photo-ring--2" />
             <img
-              src={profileImg}
+              src={bio.avatar ? getImageUrl(bio.avatar) : profileImg}
               alt={bio.name}
               className="hero-photo"
             />

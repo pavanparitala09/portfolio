@@ -1,0 +1,21 @@
+[{
+  "_id": {
+    "$oid": "6a0a9bb7ae48df535b164df2"
+  },
+  "name": "Paritala Pavan Kumar",
+  "roles": [
+    "Full Stack Developer",
+    "React Developer",
+    "Node.js Developer",
+    "Problem Solver"
+  ],
+  "description": "I build high-performance web applications with clean code and scalable architecture. Passionate about delivering exceptional user experiences from backend to frontend.",
+  "aboutHeadline": "Passionate about building impactful digital experiences",
+  "aboutPara1": "I'm Paritala Pavan Kumar, an engineering student and passionate full-stack developer. I enjoy turning complex problems into elegant, user-friendly solutions using modern web technologies.",
+  "aboutPara2": "From crafting responsive frontends with React to architecting robust backend systems with Node.js and MongoDB, I thrive across the entire web stack. I'm always eager to learn new technologies and best practices.",
+  "aboutPara3": "When I'm not coding, I enjoy exploring open-source projects, contributing to developer communities, and continuously sharpening my problem-solving skills.",
+  "email": "pavankumarparitala2580@gmail.com",
+  "github": "https://github.com/pavanparitala09",
+  "linkedin": "www.linkedin.com/in/pavankumar-paritala-aa733a29a",
+  "__v": 0
+}]

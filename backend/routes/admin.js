@@ -8,36 +8,38 @@ const Contact = require('../models/Contact'); // Assuming this exists
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const cloudinary = require('../config/cloudinary');
 
-// Ensure upload directory exists
-const uploadDir = path.join(__dirname, '../uploads');
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
-}
-
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, uploadDir);
-  },
-  filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-    cb(null, uniqueSuffix + path.extname(file.originalname));
-  }
+const storage = multer.memoryStorage();
+const upload = multer({ 
+  storage: storage,
+  limits: { fileSize: 10 * 1024 * 1024 }
 });
 
-const upload = multer({ storage: storage });
-
 // @route   POST api/admin/upload
-// @desc    Upload project image
+// @desc    Upload image to Cloudinary
 // @access  Private
 router.post('/upload', auth, upload.single('image'), (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).json({ msg: 'No file uploaded' });
     }
-    const baseUrl = process.env.BASE_URL || `${req.protocol}://${req.get('host')}`;
-    const imageUrl = `${baseUrl}/uploads/${req.file.filename}`;
-    res.json({ imageUrl });
+
+    const uploadStream = cloudinary.uploader.upload_stream(
+      {
+        folder: 'portfolio',
+        resource_type: 'auto'
+      },
+      (error, result) => {
+        if (error) {
+          console.error('Cloudinary upload error:', error);
+          return res.status(500).json({ msg: 'Cloudinary upload failed', error: error.message });
+        }
+        res.json({ imageUrl: result.secure_url, publicId: result.public_id });
+      }
+    );
+
+    uploadStream.end(req.file.buffer);
   } catch (err) {
     console.error(err);
     res.status(500).send('Server Error');
