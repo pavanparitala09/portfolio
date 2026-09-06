@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { API_BASE_URL } from '../../config/api';
 
 const ManageSkills = () => {
   const [skills, setSkills] = useState([]);
@@ -9,7 +10,7 @@ const ManageSkills = () => {
 
   const fetchSkills = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/public/skills');
+      const res = await fetch(`${API_BASE_URL}/api/public/skills`);
       const data = await res.json();
       setSkills(data);
     } catch (err) {
@@ -38,7 +39,7 @@ const ManageSkills = () => {
 
     const payload = { category: formData.category, iconName: formData.iconName, items };
     const method = editingId ? 'PUT' : 'POST';
-    const url = editingId ? `http://localhost:5000/api/admin/skills/${editingId}` : 'http://localhost:5000/api/admin/skills';
+    const url = editingId ? `${API_BASE_URL}/api/admin/skills/${editingId}` : `${API_BASE_URL}/api/admin/skills`;
 
     try {
       const res = await fetch(url, {
@@ -70,7 +71,7 @@ const ManageSkills = () => {
     if (!window.confirm('Are you sure?')) return;
     const token = localStorage.getItem('adminToken');
     try {
-      const res = await fetch(`http://localhost:5000/api/admin/skills/${id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/admin/skills/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });

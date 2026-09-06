@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { API_BASE_URL, getImageUrl } from '../../config/api';
 
 const ManageProjects = () => {
   const [projects, setProjects] = useState([]);
@@ -11,7 +12,7 @@ const ManageProjects = () => {
 
   const fetchProjects = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/public/projects');
+      const res = await fetch(`${API_BASE_URL}/api/public/projects`);
       const data = await res.json();
       setProjects(data);
     } catch (err) {
@@ -40,7 +41,7 @@ const ManageProjects = () => {
     setUploadStatus('loading');
 
     try {
-      const res = await fetch('http://localhost:5000/api/admin/upload', {
+      const res = await fetch(`${API_BASE_URL}/api/admin/upload`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`
@@ -69,7 +70,7 @@ const ManageProjects = () => {
     const token = localStorage.getItem('adminToken');
     const payload = { ...formData, tags: formData.tags.split(',').map(t => t.trim()) };
     const method = editingId ? 'PUT' : 'POST';
-    const url = editingId ? `http://localhost:5000/api/admin/projects/${editingId}` : 'http://localhost:5000/api/admin/projects';
+    const url = editingId ? `${API_BASE_URL}/api/admin/projects/${editingId}` : `${API_BASE_URL}/api/admin/projects`;
 
     try {
       const res = await fetch(url, {
@@ -100,7 +101,7 @@ const ManageProjects = () => {
     if (!window.confirm('Are you sure?')) return;
     const token = localStorage.getItem('adminToken');
     try {
-      const res = await fetch(`http://localhost:5000/api/admin/projects/${id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/admin/projects/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -146,7 +147,7 @@ const ManageProjects = () => {
             <div className="file-upload-wrapper">
               <div className="image-preview-box">
                 {formData.image ? (
-                  <img src={formData.image} alt="Preview" />
+                  <img src={getImageUrl(formData.image)} alt="Preview" />
                 ) : (
                   <div className="image-preview-placeholder">No image selected</div>
                 )}

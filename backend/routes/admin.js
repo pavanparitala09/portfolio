@@ -35,7 +35,8 @@ router.post('/upload', auth, upload.single('image'), (req, res) => {
     if (!req.file) {
       return res.status(400).json({ msg: 'No file uploaded' });
     }
-    const imageUrl = `http://localhost:5000/uploads/${req.file.filename}`;
+    const baseUrl = process.env.BASE_URL || `${req.protocol}://${req.get('host')}`;
+    const imageUrl = `${baseUrl}/uploads/${req.file.filename}`;
     res.json({ imageUrl });
   } catch (err) {
     console.error(err);

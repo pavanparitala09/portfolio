@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FiGithub, FiExternalLink, FiCode } from 'react-icons/fi';
+import { API_BASE_URL, getImageUrl } from '../config/api';
 import './Projects.css';
 
 const FILTERS = ['all', 'web', 'mobile'];
@@ -11,7 +12,7 @@ const Projects = () => {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/public/projects');
+        const res = await fetch(`${API_BASE_URL}/api/public/projects`);
         const data = await res.json();
         setAllProjects(data);
       } catch (err) {
@@ -57,7 +58,7 @@ const Projects = () => {
               {p.featured && <span className="featured-badge">Featured</span>}
               {p.image && (
                 <div className="project-image-wrap">
-                  <img src={p.image} alt={p.title} className="project-image" />
+                  <img src={getImageUrl(p.image)} alt={p.title} className="project-image" />
                 </div>
               )}
               <div className="project-header">

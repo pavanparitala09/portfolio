@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { FiSend, FiMail, FiMapPin, FiGithub, FiLinkedin } from 'react-icons/fi';
+import { API_BASE_URL } from '../config/api';
 import './Contact.css';
 
 const Contact = () => {
@@ -14,7 +15,7 @@ const Contact = () => {
     e.preventDefault();
     setStatus('loading');
     try {
-      await axios.post('http://localhost:5000/api/contact', form);
+      await axios.post(`${API_BASE_URL}/api/contact`, form);
       setStatus('success');
       setForm({ name: '', email: '', subject: '', message: '' });
     } catch (err) {

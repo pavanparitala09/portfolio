@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { API_BASE_URL } from '../../config/api';
 
 const Messages = () => {
   const [messages, setMessages] = useState([]);
@@ -8,7 +9,7 @@ const Messages = () => {
     const fetchMessages = async () => {
       try {
         const token = localStorage.getItem('adminToken');
-        const res = await fetch('http://localhost:5000/api/admin/messages', {
+        const res = await fetch(`${API_BASE_URL}/api/admin/messages`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         const data = await res.json();

@@ -3,6 +3,7 @@ import {
   FiCode, FiDatabase, FiServer, FiGlobe,
   FiGitBranch, FiSmartphone, FiLayout, FiTerminal
 } from 'react-icons/fi';
+import { API_BASE_URL } from '../config/api';
 import './Skills.css';
 
 const iconMap = {
@@ -27,7 +28,7 @@ const Skills = () => {
   useEffect(() => {
     const fetchSkills = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/public/skills');
+        const res = await fetch(`${API_BASE_URL}/api/public/skills`);
         const data = await res.json();
         setSkills(data);
       } catch (err) {

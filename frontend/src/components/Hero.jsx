@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FiGithub, FiLinkedin, FiTwitter, FiArrowRight, FiMail } from 'react-icons/fi';
 import profileImg from '../assets/profile.jpg';
+import { API_BASE_URL } from '../config/api';
 import './Hero.css';
 
 const Hero = () => {
@@ -13,7 +14,7 @@ const Hero = () => {
   useEffect(() => {
     const fetchBio = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/public/bio');
+        const res = await fetch(`${API_BASE_URL}/api/public/bio`);
         const data = await res.json();
         setBio(data);
       } catch (err) {

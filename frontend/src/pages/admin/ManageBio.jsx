@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { API_BASE_URL } from '../../config/api';
 
 const ManageBio = () => {
   const [bio, setBio] = useState({
@@ -18,7 +19,7 @@ const ManageBio = () => {
   useEffect(() => {
     const fetchBio = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/public/bio');
+        const res = await fetch(`${API_BASE_URL}/api/public/bio`);
         const data = await res.json();
         if (data && data.name) {
           setBio({
@@ -43,7 +44,7 @@ const ManageBio = () => {
     try {
       const token = localStorage.getItem('adminToken');
       const payload = { ...bio, roles: bio.roles.split(',').map(r => r.trim()) };
-      const res = await fetch('http://localhost:5000/api/admin/bio', {
+      const res = await fetch(`${API_BASE_URL}/api/admin/bio`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
