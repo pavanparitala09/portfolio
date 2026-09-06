@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { FiSend, FiMail, FiMapPin, FiGithub, FiLinkedin } from 'react-icons/fi';
 import { API_BASE_URL } from '../config/api';
 import './Contact.css';
@@ -15,11 +14,19 @@ const Contact = () => {
     e.preventDefault();
     setStatus('loading');
     try {
-      await axios.post(`${API_BASE_URL}/api/contact`, form);
+      const res = await fetch(`${API_BASE_URL}/api/contact`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form)
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || data.msg || 'Something went wrong. Please try again.');
+      }
       setStatus('success');
       setForm({ name: '', email: '', subject: '', message: '' });
     } catch (err) {
-      setErrMsg(err.response?.data?.error || 'Something went wrong. Please try again.');
+      setErrMsg(err.message || 'Something went wrong. Please try again.');
       setStatus('error');
     }
   };

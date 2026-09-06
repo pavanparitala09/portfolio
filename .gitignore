@@ -33,3 +33,7 @@ yarn-error.log*
 # Uploaded assets
 backend/uploads/*
 !backend/uploads/.gitkeep
+
+# Data backups
+my-data/
+*.json.bak
